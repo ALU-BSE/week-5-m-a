@@ -15,3 +15,5 @@ sqlparse==0.5.3
 types-python-dateutil==2.9.0.20250822
 types-PyYAML==6.0.12.20250822
 typing_extensions==4.15.0
+djangorestframework-simplejwt==5.5.1
+drf-spectacular==0.28.0
