@@ -14,6 +14,34 @@ from users.models import User, Passenger, Rider
 from users.serializers import UserSerializer, PassengerSerializer, RiderSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+
+class UserProfileView(APIView):
+    """API endpoint to retrieve and update user profile"""
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        summary="Get user profile",
+        description="Retrieve authenticated user's profile"
+    )
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+
+    @extend_schema(
+        summary="Update user profile",
+        description="Update authenticated user's profile"
+    )
+    def put(self, request):
+        serializer = UserSerializer(
+            request.user, 
+            data=request.data, 
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """Custom token serializer to include user data"""
